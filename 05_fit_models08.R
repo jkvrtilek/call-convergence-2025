@@ -316,6 +316,7 @@ points <-
     ylab("contact call similarity")+
     xlab("familiarity level")+
     scale_colour_brewer(palette= "Dark2")+
+    geom_hline(yintercept = means[1,"mean"], col = "#1B9E77")+
     theme_bw()+
     theme(legend.position = "none"))
 
@@ -328,6 +329,7 @@ points <-
     ylab("contact call similarity")+
     xlab(" \nfamiliarity level")+
     scale_colour_brewer(palette= "Dark2")+
+    geom_hline(yintercept = means[1,"mean"], col = "#1B9E77")+
     theme_bw()+
     theme(axis.text.x = element_text(size = 11))+
     theme(legend.position = "none"))
