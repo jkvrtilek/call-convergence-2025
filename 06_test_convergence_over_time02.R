@@ -1,10 +1,13 @@
-# compare similarity of calls pre- and post-introduction of groups of bats
-# compiled from 3 previous scripts by Julia Vrtilek
-# 6 March 2025
-# using Roger Mundry's pDFA script
+# Tests of call convergence over time
+## figure showing recording dates
+## linear discriminant function analysis to get vocal distances
+## permuted DFA to get classification accuracy
+# Julia Vrtilek, Gerry Carter
 
 library(MASS)
 library(tidyverse)
+library(graph4lg)
+library(vegan)
 
 setwd(dirname(file.choose()))
 
@@ -290,7 +293,7 @@ dfa_post <- lda(individual ~
                 CV= F, 
                 data=post)
 
-#* make matrix containing change in distance (convergence) ----
+#* make matrix containing change in distance ----
 
 # get vocal distance as Mahalanobis distance between group centroids
 post_distance <- as.matrix(dist(dfa_post$means %*% dfa_post$scaling))
@@ -300,9 +303,18 @@ order <- c(unique(tole_pre$individual), unique(lp$individual))
 pre_dist <- reorder_mat(pre_distance, order)
 post_dist <- reorder_mat(post_distance, order)
 
-diff <- pre_dist - post_dist
+# get call similarity before introduction
+sim1 <- 1 - (pre_dist/max(pre_dist))
+
+# get call similarity after introduction
+sim2 <- 1 - (post_dist/max(post_dist))
+
+# get increase in similarity
+diff <- sim2 - sim1
 
 #* make familiar vs introduced matrix ----
+# 0 = originally familiar (same capture site)
+# 1 = introduced (different capture site)
 lp_bats <- unique(lp$individual)
 tole_bats <- unique(tole_pre$individual)
 
@@ -318,8 +330,61 @@ diag(a) <- NA
 rownames(a) <- c(tole_bats,lp_bats)
 colnames(a) <- c(tole_bats,lp_bats)
 
+# check names match
+colnames(a) == colnames(diff)
+
 #* Mantel test ----
-mantel(diff, a, na.rm=T, method= 'spearman')
+set.seed(123)
+mantel(diff, a, na.rm=T, method = "spearman")
+# r = 0.28, p = 0.007
+
+# compared to familiar pairs, pairs that were introduced have greater increases in similarity
+
+
+# get within-dyad convergence ----
+dd <-  
+  tibble(bat1=rownames(diff)[row(diff)], 
+         bat2=colnames(diff)[col(diff)], 
+         diff=c(diff)) %>% 
+  filter(bat1 != bat2) %>% 
+  mutate(site1= ifelse(bat1 %in% lp_bats, "lp", "tole")) %>% 
+  mutate(site2= ifelse(bat2 %in% lp_bats, "lp", "tole")) %>% 
+  mutate(dyad= ifelse(bat1<bat2, paste(bat1,bat2, sep="_"), paste(bat2,bat1, sep="_"))) %>% 
+  mutate(introduced= site1!= site2) %>% 
+  group_by(dyad, introduced) %>% 
+  summarize(diff= mean(diff)) %>% 
+  ungroup() %>% 
+  separate(dyad, into = c("bat1", "bat2"))
+
+# how many introduced dyads had increased similarity? ----
+t <- 
+  dd %>% 
+  mutate(increase= diff>0) %>% 
+  mutate(group= case_when(
+    introduced ~ "introduced",
+    bat1 %in% lp_bats & bat2 %in% lp_bats ~ "Las Pavas",
+    bat1 %in% tole_bats & bat2 %in% tole_bats ~ "Tole")) %>% 
+  group_by(group) %>% 
+  summarize(increase= sum(increase), n=n()) %>% 
+  mutate(decrease = n-increase) %>% 
+  dplyr::select(-n)
+# 21 of 35 introduced pairs showed convergence (60%)
+# 1 of 10 familiar Las Pavas pairs showed convergence (10%)
+# 9 of 21 familiar Tole bats showed convergence (43%)
+
+
+# multi-membership model ----
+library(brms)
+fit <- brm(diff ~ introduced + (1|mm(bat1,bat2)), 
+           family= gaussian(), 
+           data= dd, 
+           seed = 123,
+           iter = 6000,    
+           warmup = 2000, 
+           chains = 4)
+
+summary(fit)
+# Compared to familiar pairs, introduced bats showed greater increases in call similarity (coefficient = 0.06, Bayesian 95% credible interval = 0.02 to 0.11) 
 
 
 # get misclassification rates for pre- and post- intro ----

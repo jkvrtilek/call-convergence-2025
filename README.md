@@ -47,7 +47,7 @@ This folder or directory has 6 scripts that should be run sequentially:
     - MODEL 4: Does within-group contact rate predict contact call similarity?
     - MODEL 5: Does within-group non-kin food sharing predict contact call similarity?  
     
-6. 06_similarity_over_timeXX.R
+6. 06_test_convergence_over_timeXX.R
 
     - Creates figure showing all the recording dates for a subset of bats
           - 7 bats recorded pre- and post-introduction to a group of unfamiliar bats
@@ -55,6 +55,8 @@ This folder or directory has 6 scripts that should be run sequentially:
     - Classifies calls to bat using a single DFA without cross validation to get vocal distances between bats
           - For pre-introduction calls and unfamiliar bat calls
           - For post-introduction calls and now-familiar bat calls
+    - Mantel test to compare similarity matrix with familiarity matrix
+    - Finds number of introduced and familiar dyads with increased similarity
     - Runs a permuted DFA to determine classification accuracy
           - For pre-introduction calls and unfamiliar bat calls
           - For post-introduction calls and now-familiar bat calls    
@@ -78,7 +80,7 @@ Folders:
     - CSV of all model results (model_results.csv)
     - R workspace, will load all relevant data without having to run the models  
     
-3. 06_similarity_over_time
+3. 06_test_convergence_over_time
 
     - Plot of recording dates for pre/post-introduction bats
     - pDFA results for bats pre-introduction with unfamiliar bats

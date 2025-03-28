@@ -31,7 +31,7 @@ distdf <-
 
 # get bat sexes and ages at recording
 sex <- 
-  read.csv("social data/sex_age02.csv") %>% 
+  read.csv("sex_age02.csv") %>% 
   mutate(birthdate = mdy(birthdate), date= mdy(date)) %>% 
   mutate(age.days = as.numeric(date- birthdate)) %>% 
   mutate(age.years = age.days/365) %>% 
@@ -42,7 +42,7 @@ sex <-
 
 # get kinship
 k <- 
-  read_csv("social data/kinship-all-bats01.csv") %>% 
+  read_csv("kinship-all-bats01.csv") %>% 
   group_by(dyad) %>% 
   arrange(dyad, bat1) %>% 
   summarize(bat1= first(bat1), bat2= first(bat2), site1= first(site1), site2= first(site2), colony1= first(colony1), colony2= first(colony2), kinship= first(kinship)) %>% 
