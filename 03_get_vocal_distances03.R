@@ -7,9 +7,9 @@
 rm(list=ls())
 
 # load packages
-library(tidyverse)
 library(MASS)
 library(patchwork)
+library(tidyverse)
 
 # get data
 raw <- read.csv("vampire_call_measures_transformed.csv")
@@ -89,6 +89,40 @@ ggsave(
   height = 6,
   units = c("in", "cm", "mm", "px"),
   dpi = 300)
+
+# determine min/max/mean number of recording sessions per bat-------
+# get list of dates bats were recorded on
+rs <- d2 %>%
+  dplyr::select(date, bat) %>% 
+  distinct() %>% 
+  arrange(bat)
+rs$date <- as.Date(rs$date)
+
+# add "session" column to account for recordings taking place over midnight
+rs2 <- rs %>% 
+  mutate(midnight = ifelse(bat != lag(bat), FALSE,
+                           ifelse(lag(date) == date-1, TRUE,
+                                  FALSE))) %>% 
+  mutate(session = ifelse(midnight == TRUE, date - 1,
+                          ifelse(midnight == FALSE, date,
+                                 ifelse(is.na(midnight), date,
+                                        NA)))) %>% 
+  mutate(id = paste(bat, date, sep = "/"))
+rs2$session <- as.Date(rs2$session, origin="1970-01-01")
+
+# fix first session row
+rs2$session[1] <- rs2$session[2]
+
+# get number of sessions per bat
+rs3 <- rs2 %>%
+  # fix veronica 2013-02-15 (seems like no calls were recorded before midnight so above code fails)
+  mutate(session = case_when(id == "veronica/2013-02-15" ~ as.Date("2013-02-14"),
+                             TRUE ~ session)) %>% 
+  dplyr::select(bat, session) %>% 
+  group_by(bat) %>% 
+  summarize(n = n()) %>% 
+  arrange(n)
+mean(rs3$n)
 
 # classify calls to bat using dfa with cross-validation (leave one-out classification)--------
 dfa <- lda(bat ~ 
