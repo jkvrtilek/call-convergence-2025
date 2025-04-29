@@ -308,7 +308,7 @@ points <-
 # plot with raw data
 (p3 <- 
     means %>% 
-    ggplot(aes(x=effect, y=mean, color=effect))+
+    ggplot(aes(x=effect, y=mean))+
     geom_jitter(data= points, aes(y= sim), size=1, alpha=0.5, height=0, width=0.1)+
     geom_boxplot(data= points, aes(y= sim), width=0.1, fill=NA, color="black", outlier.shape=NA)+
     geom_point(position = position_nudge(x = 0.25), size=1)+
@@ -316,20 +316,20 @@ points <-
     ylab("contact call similarity")+
     xlab("familiarity level")+
     scale_colour_brewer(palette= "Dark2")+
-    geom_hline(yintercept = means[1,"mean"], col = "#1B9E77")+
+    geom_hline(yintercept = means[1,"mean"], col = "black")+
     theme_bw()+
     theme(legend.position = "none"))
 
 # plot without raw data
 (p4 <- 
     means %>% 
-    ggplot(aes(x=effect, y=mean, color=effect))+
+    ggplot(aes(x=effect, y=mean))+
     geom_point(size=3)+
     geom_errorbar(aes(ymin=low, ymax=high, width=.1), size=1)+
     ylab("contact call similarity")+
     xlab(" \nfamiliarity level")+
     scale_colour_brewer(palette= "Dark2")+
-    geom_hline(yintercept = means[1,"mean"], col = "#1B9E77")+
+    geom_hline(yintercept = means[1,"mean"], col = "black")+
     theme_bw()+
     theme(axis.text.x = element_text(size = 11))+
     theme(legend.position = "none"))
