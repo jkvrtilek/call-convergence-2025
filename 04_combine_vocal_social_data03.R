@@ -6,7 +6,7 @@
 rm(list=ls())
 
 # set working directory
-#setwd("/Users/gc1511/Dropbox (Personal)/Dropbox/_working/_ACTIVE/__students/Julia Vrtilek/2024/call convergence/2024-09") 
+setwd("/Users/jkvrtilek/Desktop/OSU/PhD/GitHub/call-convergence-2025") 
 
 # load packages
 library(tidyverse)
@@ -31,7 +31,7 @@ distdf <-
 
 # get bat sexes and ages at recording
 sex <- 
-  read.csv("sex_age02.csv") %>% 
+  read.csv("sex_age03.csv") %>% 
   mutate(birthdate = mdy(birthdate), date= mdy(date)) %>% 
   mutate(age.days = as.numeric(date- birthdate)) %>% 
   mutate(age.years = age.days/365) %>% 

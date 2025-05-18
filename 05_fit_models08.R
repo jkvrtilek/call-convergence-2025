@@ -232,9 +232,9 @@ summary(fit.k2)
   rownames_to_column(var= "term") %>% 
   filter(term!= "Intercept") %>% 
   mutate(predictor= case_when(
-    term == 'scalecontact.lograte' ~ "contact rate (allogrooming + food sharing), conditioning on kinship and being caged together",
-    term == 'scalekinship' ~ "kinship, conditioning on contact rate and being caged together",
-    term == 'familiarTRUE' ~ "caged together, conditioning on contact rate and kinship")) %>% 
+    term == 'scalecontact.lograte' ~ "affiliation rate (allogrooming + food sharing), conditioning on kinship and being caged together",
+    term == 'scalekinship' ~ "kinship, conditioning on affiliation rate and being caged together",
+    term == 'familiarTRUE' ~ "caged together, conditioning on affiliation rate and kinship")) %>% 
   mutate(n.pairs = nrow(t)) %>%  
   mutate(sample= "pairs of adults with known kinship"))
 
@@ -242,12 +242,12 @@ summary(fit.k2)
 coefs.k2 %>% 
     # wrap text
     mutate(label= case_when(
-      predictor == "contact rate (allogrooming + food sharing), conditioning on kinship and being caged together"~ 
-        "contact rate\nconditioning on kinship\nand being caged together\n",
-      predictor == "kinship, conditioning on contact rate and being caged together" ~ 
-        "kinship\nconditioning on contact rate\nand being caged together",
-      predictor == "caged together, conditioning on contact rate and kinship" ~
-        "caged together\nconditioning on contact rate\nand kinship",
+      predictor == "affiliation rate (allogrooming + food sharing), conditioning on kinship and being caged together"~ 
+        "affiliation rate\nconditioning on kinship\nand being caged together\n",
+      predictor == "kinship, conditioning on affiliation rate and being caged together" ~ 
+        "kinship\nconditioning on affiliation rate\nand being caged together",
+      predictor == "caged together, conditioning on affiliation rate and kinship" ~
+        "caged together\nconditioning on affiliation rate\nand kinship",
       TRUE ~ "error")) %>% 
     mutate(label= fct_rev(label)) %>%  
     ggplot(aes(x=Estimate, y=label))+
@@ -456,9 +456,9 @@ coefs.roost <-
 
 remove(t)
 
-# MODEL 4: Does within-group contact rate predict contact call similarity?------------
+# MODEL 4: Does within-group affiliation rate predict contact call similarity?------------
 
-#***plot contact effect-------------
+#***plot affiliation effect-------------
 # get relevant data
 # pairs of female bats in the same group
 t <- 
@@ -489,7 +489,7 @@ t <-
     facet_wrap(~colony, scales= "free_x")+
     geom_point(size=2)+
   geom_smooth(method="lm")+
-  xlab("within-group contact log rate")+
+  xlab("within-group affiliation log rate")+
   ylab("contact call similarity")+
   scale_color_brewer(palette= "Dark2")+
   theme_bw()+
@@ -497,7 +497,7 @@ t <-
 
 # save plot
 ggsave(
-  "contact_plot.pdf",
+  "affiliation_plot.pdf",
   plot = p,
   scale = 1,
   width = 6,
@@ -655,7 +655,7 @@ all_coefs %>%
   mutate(Sample= paste(n.pairs, sample)) %>% 
   mutate(Term= case_when(
     term == "scalekinship" ~ "kinship (scaled)",
-    term == "scalecontact.lograte" ~ "contact log rate (scaled)",
+    term == "scalecontact.lograte" ~ "affiliation log rate (scaled)",
     term == "familiarTRUE" ~ "caged together (T/F)",
     term == "famTRUE" ~ "caged together (T/F)",
     term == "scaledonation.lograte" ~ "food sharing log rate (scaled)",
@@ -674,15 +674,15 @@ all_coefs %>%
     predictor == "caged together" ~ 
       "5. caged together (model 3)\n(nonkin females only)",
     predictor == "within-colony contact" ~ 
-      "6. contact rate\namong nonkin females\nconditioning on social history\n(model 4)",
+      "6. affiliation rate\namong nonkin females\nconditioning on social history\n(model 4)",
     predictor == "within-colony food sharing"~ 
       "7. food-sharing rate\namong nonkin females\nconditioning on social history\n(model 5)",
-    predictor == "contact rate (allogrooming + food sharing), conditioning on kinship and being caged together"~ 
-      "3. contact rate (model 2)\nconditioning on kinship\nand being caged together\n",
-    predictor == "kinship, conditioning on contact rate and being caged together" ~ 
-      "2. kinship (model 2)\nconditioning on contact rate\nand being caged together",
-    predictor == "caged together, conditioning on contact rate and kinship" ~
-      "4. caged together (model 2)\nconditioning on contact rate\nand kinship",
+    predictor == "affiliation rate (allogrooming + food sharing), conditioning on kinship and being caged together"~ 
+      "3. affiliation rate (model 2)\nconditioning on kinship\nand being caged together\n",
+    predictor == "kinship, conditioning on affiliation rate and being caged together" ~ 
+      "2. kinship (model 2)\nconditioning on affiliation rate\nand being caged together",
+    predictor == "caged together, conditioning on affiliation rate and kinship" ~
+      "4. caged together (model 2)\nconditioning on affiliation rate\nand kinship",
     predictor == "kinship" ~
       "1. kinship (model 1)",
     TRUE ~ "error")) %>% 
@@ -718,15 +718,15 @@ ggsave(
      label == "Model1 b_scalekinship" ~
        "1. kinship (model 1)",
      label == "Model2 b_scalekinship" ~ 
-       "2. kinship (model 2)\nconditioning on contact rate\nand co-housing",
+       "2. kinship (model 2)\nconditioning on affiliation rate\nand co-housing",
      label == "Model2 b_scalecontact.lograte"~ 
-       "3. contact rate (model 2)\nconditioning on kinship\nand co-housing\n",
+       "3. affiliation rate (model 2)\nconditioning on kinship\nand co-housing\n",
      label == "Model2 b_familiarTRUE" ~
-       "4. co-housing (model 2)\nconditioning on contact rate\nand kinship",
+       "4. co-housing (model 2)\nconditioning on affiliation rate\nand kinship",
      label== "Model3 b_famTRUE" ~ 
        "5. co-housing (model 3)\n(nonkin females only)",
      label == "Model4 b_scalecontact.lograte" ~ 
-       "6. contact rate (model 4) \nconditioning on capture site\n(familiar nonkin females only)",
+       "6. affiliation rate (model 4) \nconditioning on capture site\n(familiar nonkin females only)",
      label == "Model5 b_scaledonation.lograte" ~ 
        "7. food-sharing rate (model 5) \nconditioning on capture site\n(familiar nonkin females only)",
      TRUE ~ "error")) %>% 

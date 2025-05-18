@@ -29,7 +29,7 @@ d <-
 min.sample.size <- 80
 
 #* capture sites ----
-capture.site <- read.csv("sex_age02.csv") %>% 
+capture.site <- read.csv("sex_age03.csv") %>% 
   dplyr::select(bat, capture.site) %>% 
   distinct
 
@@ -88,7 +88,7 @@ labels_tole <- rec_dates %>%
 p <- rec_dates %>% 
   ggplot(aes(x=date, y=bat, group=bat)) +
   facet_wrap(~CaptureSite, scales = "free_y", ncol = 1) +
-  geom_point(aes(color = capture.site)) + 
+  geom_point(aes(color = capture.site), size = 3) + 
   geom_line() +
   scale_x_date(date_labels = "%b %Y", breaks = "3 months") +
   scale_color_manual(values = c("#0f2d59","#3eb7c7")) +
@@ -106,12 +106,12 @@ p <- rec_dates %>%
         axis.title.x = element_text(size = 20),
         axis.title.y = element_text(size = 20),
         strip.text.x = element_text(size = 16)) +
-  geom_text(data = labels_lp, aes(label = bat), nudge_x = +15) +
-  geom_text(data = labels_tole, aes(label = bat), nudge_x = +15)
+  geom_text(data = labels_lp, aes(label = bat), nudge_x = +18) +
+  geom_text(data = labels_tole, aes(label = bat), nudge_x = +18)
 
 # save plot
 ggsave(
-  "06_similarity_over_time/recording_dates.pdf",
+  "06_test_convergence_over_time/recording_dates.pdf",
   plot = p,
   scale = 1,
   width = 8,
