@@ -61,8 +61,8 @@ social <-
             donation.lograte = mean(donation.lograte, na.rm=T),
             groom.rate = mean(groom.rate, na.rm=T),
             groom.lograte = mean(groom.lograte, na.rm=T),
-            contact.rate = mean(contact.rate, na.rm=T),
-            contact.lograte = mean(contact.lograte, na.rm=T)) 
+            affiliation.rate = mean(affiliation.rate, na.rm=T),
+            affiliation.lograte = mean(affiliation.lograte, na.rm=T)) 
 
 # combine all data
 d <- 
@@ -190,7 +190,7 @@ d %>%
 # select variables
 d2 <- 
   d %>% 
-  dplyr::select(dyad, dyad.sex, bat1, bat2, both_zoo, both_wild, both_adult, both_young, study_site, treatment_rank, treatment_label, kinship, kinship2, donation.rate, donation.lograte, groom.rate, groom.lograte, contact.rate, contact.lograte, dist, sim)
+  dplyr::select(dyad, dyad.sex, bat1, bat2, both_zoo, both_wild, both_adult, both_young, study_site, treatment_rank, treatment_label, kinship, kinship2, donation.rate, donation.lograte, groom.rate, groom.lograte, affiliation.rate, affiliation.lograte, dist, sim)
 
 # save data
 write.csv(d2,"vocal_social_data.csv", row.names=F)
