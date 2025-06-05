@@ -11,6 +11,8 @@ library(tidyverse)
 # function to make scale() function return a vector not a matrix
 scale2 <- function(x){as.vector(scale(x, scale = FALSE))}
 
+# Data for this script is available on Figshare: Vrtilek, Julia K.; Smith-Vidaurre, Grace; Carter, Gerald (2025). Data for "Vocal convergence during formation of cooperative relationships in vampire bats". figshare. Dataset. https://doi.org/10.6084/m9.figshare.29191334.v1
+
 # get data
 raw <- read.csv("vampire_call_measures.csv")
 

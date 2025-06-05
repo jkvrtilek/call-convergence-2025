@@ -11,11 +11,13 @@ library(tidyverse)
 # set working directory
 setwd(dirname(file.choose()))
 
+# Data for this script is available on Figshare: Vrtilek, Julia K.; Smith-Vidaurre, Grace; Carter, Gerald (2025). Data for "Vocal convergence during formation of cooperative relationships in vampire bats". figshare. Dataset. https://doi.org/10.6084/m9.figshare.29191334.v1
+
 # get 27 acoustic measures from warblr
-specan <- readRDS("acoustic data/ds_completespecan_2023-10-02.RDS")
+specan <- readRDS("ds_completespecan_2023-10-02.RDS")
 
 # get other acoustic measures of fundamental frequency
-ff <- readRDS("acoustic data/ds_fundfreq_summary_2023-11-06.RDS")
+ff <- readRDS("ds_fundfreq_summary_2023-11-06.RDS")
 
 # combine datasets by sound.files
 d <- left_join(specan, ff, by = "sound.files")
