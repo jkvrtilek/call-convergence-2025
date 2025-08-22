@@ -4,7 +4,7 @@
 # 28 Jan 2024
 
 # load packages
-X <- c("plyr", "tidyverse", "data.table", "warbleR", "tuneR", "pbapply")
+X <- c("dplyr", "tidyverse", "data.table", "warbleR", "tuneR", "pbapply")
 invisible(lapply(X, library, character.only = TRUE))
 
 # load arguments from sbatch
@@ -31,7 +31,7 @@ x2 <- x %>%
   mutate(sound.files = paste("ds",sound.files,sep="_"))
 
 # run function
-st <- selection_table(x2, path = args, extended = TRUE, mar = 0.05, confirm.extended = FALSE)
+st <- selection_table(x2, path = args, extended = TRUE, mar = 0.05)
 
 # get name for ext sel table
 name <- paste("ds",temp[[1]][7],temp[[1]][6],sep="_")

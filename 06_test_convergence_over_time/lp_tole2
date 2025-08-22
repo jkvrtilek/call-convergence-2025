@@ -1,12 +1,12 @@
 "what" "value"
-"N correctly assigned, original, selected" 786.07
-"P for selected" 0.714
-"N correctly assigned, original, cross-validated" 24067.2
-"P for cross-validated" 0.554
+"N correctly assigned, original, selected" 822.25
+"P for selected" 0.682
+"N correctly assigned, original, cross-validated" 26909.27
+"P for cross-validated" 0.617
 "N groups (levels of test factor)" 2
 "N subjects (levels of control factor)" 12
-"N cases total" 36791
-"N cases selected per subject" 97
-"N selected total" 1164
+"N cases total" 41547
+"N cases selected per subject" 101
+"N selected total" 1212
 "N permutations" 1000
 "N random selections" 100
