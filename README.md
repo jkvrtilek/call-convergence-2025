@@ -1,7 +1,7 @@
 # call-convergence-2025
 ## Contact call convergence in vampire bats
 
-### This project is in progress. Please contact Julia Vrtilek (jkvrtilek@gmail.com) and Gerald Carter (gcarter1640@gmail.com) for more information.
+### This project is complete. Please contact Julia Vrtilek (jkvrtilek@gmail.com) and Gerald Carter (gcarter1640@gmail.com) for more information.
 ### README last updated June 2025.
 
 <img src="https://user-images.githubusercontent.com/13193023/92195916-49f4b600-ee2b-11ea-90f3-75c0eea7e1b0.png" width="50px"/>
